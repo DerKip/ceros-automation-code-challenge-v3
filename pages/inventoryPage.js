@@ -13,8 +13,21 @@ class InventoryPage extends BasePage {
     this.zToA = element(by.cssContainingText("option", "Name (Z to A)"));
 
     this.highToLow = element(
-      by.cssContainingText("option", "Price (low to high)")
+      by.cssContainingText("option", "Price (high to low)")
     );
+    this.allItemTitles = $$(
+      ".inventory_item .inventory_item_description .inventory_item_label div:nth-child(1)"
+    );
+    this.allpriceTags = $$(".pricebar");
+  }
+
+  async getPrices() {
+    const priceTags = await this.allpriceTags.getText();
+    const price = [];
+    priceTags.forEach((priceTag) => {
+      price.push(parseFloat(priceTag.match(/[0-9].*/g)[0]));
+    });
+    return price;
   }
 }
 export default new InventoryPage();
